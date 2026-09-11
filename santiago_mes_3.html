@@ -1,0 +1,395 @@
+<title>El Mes de Santiago</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --bg:#F2F3F6;
+    --surface:#FFFFFF;
+    --surface-2:#F8F8FA;
+    --ink:#1B2233;
+    --muted:#5B6472;
+    --line:#E1E4EA;
+    --navy:#1F3864;
+    --navy-ink:#16294B;
+    --gold:#B8862E;
+    --gold-soft:#F4E9D3;
+    --good:#2F7D5C;
+    --good-soft:#E5F3ED;
+    --bad:#B23B3B;
+    --bad-soft:#FBEAEA;
+    --shadow: 0 1px 2px rgba(20,26,43,.06), 0 8px 24px -12px rgba(20,26,43,.18);
+    --focus: #6C8FC7;
+    --ventas-text: #FFFFFF;
+    --ventas-line: rgba(255,255,255,.4);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#12151C;
+      --surface:#1A1E27;
+      --surface-2:#20242F;
+      --ink:#E9EBF1;
+      --muted:#9AA3B5;
+      --line:#2B303C;
+      --navy:#7C9BD6;
+      --navy-ink:#DCE6F7;
+      --gold:#D8AF62;
+      --gold-soft:#332A18;
+      --good:#5FB98D;
+      --good-soft:#16261F;
+      --bad:#E08585;
+      --bad-soft:#2E1A1A;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+      --focus: #7C9BD6;
+      --ventas-text: #12151C;
+      --ventas-line: rgba(18,21,28,.3);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#12151C;
+    --surface:#1A1E27;
+    --surface-2:#20242F;
+    --ink:#E9EBF1;
+    --muted:#9AA3B5;
+    --line:#2B303C;
+    --navy:#7C9BD6;
+    --navy-ink:#DCE6F7;
+    --gold:#D8AF62;
+    --gold-soft:#332A18;
+    --good:#5FB98D;
+    --good-soft:#16261F;
+    --bad:#E08585;
+    --bad-soft:#2E1A1A;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+    --focus: #7C9BD6;
+    --ventas-text: #12151C;
+    --ventas-line: rgba(18,21,28,.3);
+  }
+
+  *{ box-sizing:border-box; }
+  input[type=number]::-webkit-outer-spin-button,
+  input[type=number]::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
+  input[type=number]{ appearance:textfield; -moz-appearance:textfield; }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+    padding-inline:16px;
+    padding-block:40px;
+  }
+  .num{ font-family:"IBM Plex Mono", ui-monospace, monospace; font-variant-numeric:tabular-nums; }
+
+  .page{
+    max-width:640px;
+    margin-inline:auto;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+  }
+
+  header.hero{ display:flex; flex-direction:column; gap:6px; }
+  .eyebrow{
+    font-family:"IBM Plex Mono", monospace;
+    font-size:12px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--gold);
+    font-weight:600;
+  }
+  .kicker{
+    font-size:14px;
+    font-weight:600;
+    color:var(--muted);
+  }
+  h1{
+    margin:0;
+    font-size:clamp(26px,4vw,32px);
+    font-weight:700;
+    letter-spacing:-.01em;
+    text-wrap:balance;
+    color:var(--ink);
+  }
+  .sub{ margin:0; color:var(--muted); font-size:14.5px; max-width:52ch; line-height:1.5; }
+
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:14px;
+    box-shadow:var(--shadow);
+    padding:22px;
+  }
+
+  .card h2{
+    margin:0 0 16px;
+    font-size:12px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--muted);
+    font-weight:600;
+  }
+
+  /* --- Inputs card --- */
+  .field{ display:flex; flex-direction:column; gap:8px; }
+  .field + .field{ margin-top:18px; }
+  .field label{ font-size:14px; font-weight:500; color:var(--ink); }
+  .field .hint{ font-size:12.5px; color:var(--muted); }
+
+  .pillgroup{
+    display:inline-flex;
+    border:1px solid var(--line);
+    border-radius:10px;
+    overflow:hidden;
+    width:fit-content;
+  }
+  .pillgroup button{
+    appearance:none; border:none; background:var(--surface-2);
+    color:var(--muted);
+    font-family:inherit; font-size:14px; font-weight:600;
+    padding:10px 20px; cursor:pointer;
+    transition:background .15s ease, color .15s ease;
+  }
+  .pillgroup button:not(:last-child){ border-right:1px solid var(--line); }
+  .pillgroup button[aria-pressed="true"]{ background:var(--navy); color:#fff; }
+  .pillgroup button:focus-visible{ outline:2px solid var(--focus); outline-offset:-2px; }
+
+  .amountfield{
+    display:flex; align-items:center; gap:8px;
+    border:1px solid var(--line);
+    border-radius:10px;
+    background:var(--surface-2);
+    padding:10px 14px;
+    width:100%;
+    max-width:280px;
+  }
+  .amountfield span{ color:var(--muted); font-weight:600; }
+  .amountfield input{
+    border:none; background:transparent; outline:none;
+    font-family:"IBM Plex Mono", monospace;
+    font-variant-numeric:tabular-nums;
+    font-size:17px; font-weight:600; color:var(--ink);
+    width:100%; min-width:0;
+  }
+  .amountfield:focus-within{ outline:2px solid var(--focus); outline-offset:1px; }
+
+  /* --- Ventas tile --- */
+  .ventas{
+    background:linear-gradient(155deg, var(--navy-ink) 0%, var(--navy) 100%);
+    border-radius:14px;
+    padding:22px 24px;
+    color:var(--ventas-text);
+    box-shadow:var(--shadow);
+    display:flex; flex-direction:column; gap:4px;
+  }
+  .ventas .lbl{ font-size:12px; letter-spacing:.1em; text-transform:uppercase; opacity:.85; font-weight:600; }
+  .ventas .val{ font-size:clamp(30px,5vw,38px); font-weight:700; }
+
+
+  /* --- Ledger rows --- */
+  .ledger{ display:flex; flex-direction:column; }
+  .row{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    gap:16px; padding-block:14px;
+    border-top:1px solid var(--line);
+  }
+  .row:first-child{ border-top:none; padding-top:0; }
+  .row .meta{ display:flex; flex-direction:column; gap:3px; max-width:60%; }
+  .row .name{ font-size:14.5px; font-weight:600; }
+  .row .desc{ font-size:12.5px; color:var(--muted); line-height:1.45; }
+  .row .desc.asum{ font-style:italic; }
+  .row .amt{ font-size:16px; font-weight:600; white-space:nowrap; }
+  .row .amt.neg{ color:var(--bad); }
+
+  .badge{
+    display:inline-block; font-size:11px; font-weight:600;
+    padding:2px 8px; border-radius:999px; margin-top:2px; width:fit-content;
+  }
+  .badge.info{ background:var(--gold-soft); color:var(--gold); }
+
+  .total{
+    display:flex; justify-content:space-between; align-items:center;
+    padding-top:16px; margin-top:6px; border-top:2px solid var(--line);
+  }
+  .total .name{ font-size:13px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+  .total .amt{ font-size:18px; font-weight:700; }
+
+  .resultado{
+    border-radius:14px; padding:20px 22px;
+    display:flex; justify-content:space-between; align-items:center; gap:16px;
+    box-shadow:var(--shadow);
+    background:var(--good-soft);
+  }
+  .resultado.negativo{ background:var(--bad-soft); }
+  .resultado .name{ font-size:13px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); font-weight:700; }
+  .resultado .amt{ font-size:24px; font-weight:700; color:var(--good); }
+  .resultado.negativo .amt{ color:var(--bad); }
+
+  @media (max-width:420px){
+    .row{ flex-direction:column; gap:4px; }
+    .row .amt{ align-self:flex-end; }
+    .row .meta{ max-width:100%; }
+  }
+</style>
+
+<div class="page">
+
+  <header class="hero">
+    <span class="eyebrow">Electroseguridad</span>
+    <span class="kicker">Simulador de un mes</span>
+    <h1>El mes de Santiago</h1>
+    <p class="sub">Empresa unipersonal, Literal E (Art. 52 Título 4).</p>
+  </header>
+
+  <section class="card" aria-labelledby="datos-h">
+    <h2 id="datos-h">Datos del mes</h2>
+
+    <div class="field">
+      <label id="cobertura-lbl">¿Santiago tiene cobertura mutual por su trabajo en relación de dependencia?</label>
+      <div class="pillgroup" role="group" aria-labelledby="cobertura-lbl">
+        <button type="button" id="btn-si" aria-pressed="true">Sí, ya tiene cobertura</button>
+        <button type="button" id="btn-no" aria-pressed="false">No tiene cobertura</button>
+      </div>
+      <p class="hint" id="cobertura-hint"></p>
+    </div>
+
+    <div class="field">
+      <label for="facturacion">Facturación del mes</label>
+      <div class="amountfield">
+        <span>$</span>
+        <input type="number" id="facturacion" inputmode="decimal" min="0" step="100" value="95000">
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="compras">Compras del mes</label>
+      <div class="amountfield">
+        <span>$</span>
+        <input type="number" id="compras" inputmode="decimal" min="0" step="100" value="0">
+      </div>
+    </div>
+  </section>
+
+  <div class="ventas">
+    <span class="lbl">Ventas del mes</span>
+    <span class="val num" id="out-ventas">$ 95.000</span>
+  </div>
+
+  <section class="card" aria-labelledby="gastos-h">
+    <h2 id="gastos-h">Gastos del mes</h2>
+    <div class="ledger">
+
+      <div class="row">
+        <div class="meta">
+          <span class="name">Compras del mes</span>
+          <span class="desc">Mercadería y materiales comprados en el mes.</span>
+        </div>
+        <span class="amt neg num" id="out-compras">-$ 0</span>
+      </div>
+
+      <div class="row">
+        <div class="meta">
+          <span class="name">BPS · Industria y Comercio</span>
+          <span class="desc" id="bps-desc">1.ª categoría (11 BFC). Con cobertura por su trabajo dependiente: aporta jubilatorio + FRL + complementario FONASA.</span>
+          <span class="desc asum">Supuesto: aporte calculado para el primer año de actividad de la empresa.</span>
+          <span class="badge info" id="bps-badge">$3.999 fijos</span>
+        </div>
+        <span class="amt neg num" id="out-bps">-$ 3.999</span>
+      </div>
+
+      <div class="row">
+        <div class="meta">
+          <span class="name">DGI · Anticipo Literal E</span>
+          <span class="desc" id="dgi-desc">Menor entre 3,3% de la facturación y la cuota mínima ($1.478). $0 si no facturó.</span>
+          <span class="desc asum">Supuesto: cuota mínima del primer año de actividad de la empresa (25% de la cuota plena).</span>
+          <span class="badge info" id="dgi-badge">3,3% × facturación</span>
+        </div>
+        <span class="amt neg num" id="out-dgi">-$ 1.478</span>
+      </div>
+
+      <div class="row">
+        <div class="meta">
+          <span class="name">Honorarios profesionales</span>
+          <span class="desc">Cargo fijo mensual, todos los meses.</span>
+        </div>
+        <span class="amt neg num">-$ 1.900</span>
+      </div>
+
+      <div class="total">
+        <span class="name">Total gastos</span>
+        <span class="amt num" id="out-total-gastos">-$ 7.377</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="resultado" id="resultado">
+    <span class="name">Resultado neto del mes</span>
+    <span class="amt num" id="out-resultado">$ 87.623</span>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  var BPS_CON = 3999, BPS_SIN = 7689, HON = 1900, TASA = 0.033, CUOTA_MIN = 1478;
+
+  var btnSi = document.getElementById('btn-si');
+  var btnNo = document.getElementById('btn-no');
+  var facturacionInput = document.getElementById('facturacion');
+  var comprasInput = document.getElementById('compras');
+  var state = { cobertura: true };
+
+  function money(n){
+    var neg = n < 0;
+    n = Math.round(Math.abs(n));
+    var s = n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    return (neg ? "-$ " : "$ ") + s;
+  }
+
+  function render(){
+    var facturacion = parseFloat(facturacionInput.value);
+    if (isNaN(facturacion) || facturacion < 0) facturacion = 0;
+
+    var compras = parseFloat(comprasInput.value);
+    if (isNaN(compras) || compras < 0) compras = 0;
+
+    var bps = state.cobertura ? BPS_CON : BPS_SIN;
+    var dgi = facturacion === 0 ? 0 : Math.min(facturacion * TASA, CUOTA_MIN);
+    var totalGastos = compras + bps + dgi + HON;
+    var resultado = facturacion - totalGastos;
+
+    document.getElementById('out-ventas').textContent = money(facturacion);
+    document.getElementById('out-compras').textContent = "-" + money(compras);
+    document.getElementById('out-bps').textContent = "-" + money(bps);
+    document.getElementById('out-dgi').textContent = "-" + money(dgi);
+    document.getElementById('out-total-gastos').textContent = "-" + money(totalGastos);
+    document.getElementById('out-resultado').textContent = money(resultado);
+
+    var res = document.getElementById('resultado');
+    res.classList.toggle('negativo', resultado < 0);
+
+    document.getElementById('bps-badge').textContent = money(bps) + " fijos";
+    document.getElementById('bps-desc').textContent = state.cobertura
+      ? "1.ª categoría (11 BFC). Con cobertura por su trabajo dependiente: aporta jubilatorio + FRL + complementario FONASA."
+      : "1.ª categoría (11 BFC). Sin cobertura por otra actividad: aporta jubilatorio + FRL + FONASA completo (titular solo, sin núcleo familiar).";
+
+    document.getElementById('dgi-badge').textContent = facturacion === 0
+      ? "sin facturación → $0"
+      : (facturacion * TASA <= CUOTA_MIN ? "3,3% × facturación" : "cuota mínima");
+  }
+
+  btnSi.addEventListener('click', function(){
+    state.cobertura = true;
+    btnSi.setAttribute('aria-pressed','true');
+    btnNo.setAttribute('aria-pressed','false');
+    render();
+  });
+  btnNo.addEventListener('click', function(){
+    state.cobertura = false;
+    btnSi.setAttribute('aria-pressed','false');
+    btnNo.setAttribute('aria-pressed','true');
+    render();
+  });
+  facturacionInput.addEventListener('input', render);
+  comprasInput.addEventListener('input', render);
+
+  render();
+})();
+</script>
